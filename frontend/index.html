@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoApp</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="slider">
+        <ul>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="addTask.html">タスク追加</a></li>
+            <li><a href="category.html">カテゴリー編集</a></li>
+            <li><a href="status.html">ステータス編集</a></li>
+        </ul>
+    </div>
+    <button class="menu">
+        <img src="fig/menu.png" alt="メニューボタン">
+    </button>
+    <div class="container">
+        <header class="header">
+            <h1>TODO LIST</h1>
+        </header>
+        <div class="tasks">
+            <div class="addTask">
+                <div class="addTaskForms">
+                    <div class="addTaskInitial">
+                        AddTask
+                    </div>
+                    <div class="addTaskForm" contenteditable="true"></div>
+                </div>
+                <button href="addTask.html" class="addTaskButton">
+                    +
+                </button>
+            </div>
+            <div class="taskBoxs">
+                <div class="taskBox" draggable="true">
+                    <div class="circle">
+                        <img src="fig/unCheckedCircle.png" alt="チャック欄">
+                    </div>
+                    <p class="taskName">Walk the dog</p>
+                    <p class="deadline">25/10/31</p>
+                    <p class="taskCategory">Home</p>
+                    <div class="statusarea">
+                        <p class="status">
+                            expired
+                        </p>
+                    </div>
+                </div>
+                <div class="taskBox" draggable="true">
+                    <div class="circle">
+                        <img src="fig/unCheckedCircle.png" alt="チャック欄">
+                    </div>
+                    <p class="taskName">Read a book</p>
+                    <p class="deadline">25/10/31</p>
+                    <p class="taskCategory">Home</p>
+                    <div class="statusarea">
+                        <p class="status">
+                            expired
+                        </p>
+                    </div>
+                </div>
+                <div class="taskBox" draggable="true">
+                    <div class="circle">
+                        <img src="fig/unCheckedCircle.png" alt="チャック欄">
+                    </div>
+                    <p class="taskName">Play the dog</p>
+                    <p class="deadline">25/10/31</p>
+                    <p class="taskCategory">Home</p>
+                    <div class="statusarea">
+                        <p class="status">
+                            expired
+                        </p>
+                    </div>
+                </div>
+                <div class="taskBox" draggable="true">
+                    <div class="circle">
+                        <img src="fig/unCheckedCircle.png" alt="チャック欄">
+                    </div>
+                    <p class="taskName">Go to the cafe</p>
+                    <p class="deadline">25/10/31</p>
+                    <p class="taskCategory">Home</p>
+                    <div class="statusarea">
+                        <p class="status">
+                            expired
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="menu.js" defer></script>
+    <script src="main.js" defer></script>
+</body>
+</html>
