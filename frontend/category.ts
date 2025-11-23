@@ -10,59 +10,51 @@ const categoryChangeButton = modal.querySelector(".categoryChangeButton") as HTM
 const duplicateModal = document.querySelector('.duplicateModal') as HTMLDivElement;
 const duplicateButtonArea = duplicateModal.querySelector('.duplicateButtonArea') as HTMLDivElement;
 const duplicateButton = duplicateButtonArea.querySelectorAll<HTMLButtonElement>(".duplicateButton");
+const categoryBoxs = document.querySelector(".categoryBoxs") as HTMLDivElement;
 
 
 
 class CategoryBox {
-  private id: string;
-  private categoryName: string;
-  private categoryBoxs: HTMLDivElement;
-  private categoryBox: HTMLDivElement;
-  private category: HTMLDivElement;
-  private edit_category: HTMLButtonElement;
-  private editImg: HTMLImageElement
+  private edit_category?: HTMLDivElement;
 
-
-  constructor(id: string, categoryName: string) {
-    this.id = id;
-    this.categoryName = categoryName;
-    this.categoryBoxs = document.querySelector(".categoryBoxs")!;
-    this.categoryBox = document.createElement("div")!;
-    this.category = document.createElement("div")!;
-    this.edit_category = document.createElement("button");
-    this.editImg = document.createElement("img");
-  }
-
+  constructor(
+    private id: string,
+    private categoryName: string,
+    private parent: HTMLDivElement,
+  ) {}
 
   //method
-  addCategoryBox() { //フロントにカテゴリーを表示
-    this.categoryBox.className = "categoryBox";
-    this.category.className = "category";
-    this.category.textContent = this.categoryName;
-    this.categoryBox.appendChild(this.category);
+  create() {
+    const categoryBox = document.createElement("div");
+    categoryBox.className = "categoryBox";
+    
+    const category = document.createElement("div");
+    category.className = "category";
+    category.textContent = this.categoryName;
+    categoryBox.appendChild(category);
 
+    this.edit_category = document.createElement("div");
     this.edit_category.className = "edit_category";
     this.edit_category.setAttribute("type", "button");
-    this.editImg.src = "fig/edit.png";
-    this.editImg.alt = "編集ボタン";
-    this.edit_category.appendChild(this.editImg);
     
-    this.categoryBox.appendChild(this.edit_category);
-    this.categoryBoxs.appendChild(this.categoryBox);
+    const editImg = document.createElement("img");
+    editImg.src = "fig/edit.png";
+    editImg.alt = "編集ボタン";
+
+    this.edit_category.appendChild(editImg);
+    categoryBox.appendChild(this.edit_category);
+    this.parent.appendChild(categoryBox);
   }
 
   //編集画面に遷移イベント追加
   moveModal() {
-    this.edit_category.addEventListener("click", async () => {
-      await setTimeout(() => {
-        console.log("click")
-        overlay.classList.remove("hidden");
-        modal.classList.remove("hidden");
-        categoryChangeName.textContent = this.categoryName;
-        categoryChangeName.dataset.id = this.id;
-        categoryChangeName.dataset.nowCategory = this.categoryName;
-      }, 100)
-
+    this.edit_category!.addEventListener("click", () => {
+      console.log("click");
+      overlay.classList.remove("hidden");
+      modal.classList.remove("hidden");
+      categoryChangeName.textContent = this.categoryName;
+      categoryChangeName.dataset.id = this.id;
+      categoryChangeName.dataset.nowCategory = this.categoryName;
     });
   }
 }
@@ -117,9 +109,10 @@ const categoryDateInServer = async () => {
     const data: { id: string, category: string }[] = await res.json();
     console.log('サーバーからの応答', data);
     data.forEach(element => {
-      const categoryBox = new CategoryBox(String(element.id), element.category);
-      categoryBox.addCategoryBox();
+      const categoryBox = new CategoryBox(String(element.id), element.category, categoryBoxs);
+      categoryBox.create();
       categoryBox.moveModal();
+      
     });
   } catch (err) {
     console.error('通信エラー', err);

@@ -99,6 +99,19 @@ app.get( '/get-category', async(req,res) => {
     }
 })
 
+app.get( '/get-task', async(req,res) => {
+    try {
+        const db = await connectDB();
+
+        const rows = await db.all("SELECT * FROM tasks");
+        console.log('DBから次のカテゴリーを送信', rows);
+        res.json(rows);
+    } catch (err) {
+        console.error('DBエラー：', err);
+        res.status(500).json({message: 'データベースエラー'});
+    }
+})
+
 type ChangeInfo = {
     id: number,
     before: string,

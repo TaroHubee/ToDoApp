@@ -28,6 +28,9 @@ export const connectDB = async () => {
       status TEXT
     )
   `);
+  // await db.exec(`
+  //   DROP TABLE IF EXISTS tasks
+  // `); // usersテーブルを削除
   return db;
 }
 

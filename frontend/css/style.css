@@ -299,21 +299,22 @@
     .categoryBox {
         display: grid;
         grid-template-columns: 8fr 1fr;
-        height: 50px;
+        height: 30px;
         background-color: whitesmoke;
-        border-radius: 10px;
-        margin-bottom: 2px;
+        border-radius: 5px;
+        margin-bottom: 4px;
+        padding-bottom: 5px;
         .category {
-            display: flex;
+            height: inherit;
             grid-column: 1;
+            display: flex;
             align-items: center;
-            padding-bottom: 3px;
             padding-left: 10px;
         }
         .edit_category {
+            height: inherit;
             cursor: pointer;
             grid-column: 2;
-            padding-bottom: 5px;
             border: none;
             background: transparent;
             display: flex;
@@ -321,15 +322,15 @@
             align-items: center;
             transition: transform 0.1s ease, opacity 0.1s ease;
             img {
-                width: 100%;
-                margin-top: 8px;
+            height: 60%;
             }
-
+            
         }
         .edit_category:active {
-            transform: scale(0.2);
-            opacity: 8.7;
-        }
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+        
     }
 }
 
