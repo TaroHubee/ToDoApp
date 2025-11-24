@@ -21,31 +21,15 @@ app.post('/add-task', async(req,res) => {
     try {
         const db = await connectDB();
 
-        //カテゴリーがすでにあるか？
-        const rows = await db.all("SELECT category FROM category");
-        const isDuble = rows.some(Element => Element.category === taskInfo.category);
-        let categoryId:number;
-        if (isDuble) {
-            const category = await db.get(
-                "SELECT id FROM category WHERE category = ?",
-                [taskInfo.category]
-            )
-            categoryId = category.id
-        } else {
-            //カテゴリーがまだなかったらカテゴリーDBに新しく作って、そのidを返す
-            await db.run(
-                'INSERT INTO category (category) VALUES (?)',
-                [taskInfo.category]
-            );
-            const category = await db.get(
-                "SELECT id FROM category WHERE category = ?",
-                [taskInfo.category]
-            )
-            categoryId = category.id
-        }
+        // 1. 登録 or 無視
+        await db.run("INSERT OR IGNORE INTO category (category) VALUES (?);", [taskInfo.category]);
+
+        // 2. id を取得
+        const row = await db.get("SELECT id FROM category WHERE category = ?;", [taskInfo.category]);
+        const categoryId = row.id;
         
         await db.run(
-            'INSERT INTO tasks (task, category, due, status) VALUES (?, ?, ?, ?)',
+            'INSERT INTO tasks (task, categoryId, due, status) VALUES (?, ?, ?, ?)',
             [taskInfo.task, categoryId, taskInfo.due, taskInfo.status]
         );
         console.log('DBに保存完了：', req.body);
@@ -67,17 +51,7 @@ app.post('/add-category', async(req,res) => {
     console.log(categoryInfo);
     try {
         const db = await connectDB();
-        const rows = await db.all("SELECT category FROM category");
-        const isDuble = rows.some(Element => Element.category === categoryInfo.category);
-        if (isDuble) {
-            console.error("重複したカテゴリーがあります。");
-            return res.status(409).json({ message: 'すでに登録されているカテゴリーです。' });
-        }
-
-        await db.run(
-            'INSERT INTO category (category) VALUES (?)',
-            [categoryInfo.category]
-        );
+        await db.run("INSERT OR IGNORE INTO category (category) VALUES (?);", [categoryInfo.category]);
         console.log('DBに保存完了：', req.body);
         res.json({message: 'カテゴリーを追加しました', categoryInfo})
     } catch (err) {
@@ -86,17 +60,33 @@ app.post('/add-category', async(req,res) => {
     }
 })
 
-app.get( '/get-category', async(req,res) => {
-    try {
-        const db = await connectDB();
 
-        const rows = await db.all("SELECT * FROM category");
-        console.log('DBから次のカテゴリーを送信', rows);
-        res.json(rows);
-    } catch (err) {
-        console.error('DBエラー：', err);
-        res.status(500).json({message: 'データベースエラー'});
+app.get( '/get-category', async(req,res) => {
+    const isReq = req.query.id;
+    const db = await connectDB();
+    if (isReq) {
+        try {
+            const categoryId: number = Number(isReq);
+            console.log('ブラウザから次のカテゴリーIDを取得', categoryId);
+            
+            const category = await db.get("SELECT * FROM category WHERE id = ?", [categoryId]);
+            console.log('DBから次のカテゴリーを送信', category);
+            res.json({category: category.category});
+        } catch (err) {
+            console.error('DBエラー：', err);
+            res.status(500).json({message: 'データベースエラー'});
+        }
+    } else {
+        try {
+            const rows = await db.all("SELECT * FROM category");
+            console.log('DBから次のカテゴリーを送信', rows);
+            res.json(rows);
+        } catch (err) {
+            console.error('DBエラー：', err);
+            res.status(500).json({message: 'データベースエラー'});
+        }
     }
+    
 })
 
 app.get( '/get-task', async(req,res) => {

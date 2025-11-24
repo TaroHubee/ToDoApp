@@ -27,7 +27,7 @@ class TaskBox {
     private _id: number,
     private _task: string,
     private _deadline: string,
-    private _categoryId: number,
+    private _category: string,
     private _statusId: number,
     private _parent: HTMLDivElement,
   ) {}
@@ -56,7 +56,7 @@ class TaskBox {
 
     const taskCategory = document.createElement("p");
     taskCategory.className = "taskCategory";
-    taskCategory.textContent = String(this._categoryId);
+    taskCategory.textContent = this._category;
 
     const statusarea = document.createElement("div");
     statusarea.className = "statusarea";
@@ -76,6 +76,23 @@ class TaskBox {
   }
 }
 
+/*カテゴリーIDからカテゴリー名を取得*/
+const getCategoryName = async (categoryId: number): Promise<string>=> {
+  try {
+    const res = await fetch(`http://localhost:3000/get-category?id=${categoryId}`, {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'}
+    });
+    console.log("サーバーに送信", categoryId);
+    const data: {category: string} = await res.json();
+    console.log('サーバーからの応答2', data.category);
+    return data.category;
+  } catch (err) {
+    console.error('通信エラー', err);
+    return "不明";
+  }
+}
+
 /*データベースに登録されてるタスクを取得*/
 document.addEventListener("DOMContentLoaded",() => {
   const taskDateInServer = async () => {
@@ -85,12 +102,14 @@ document.addEventListener("DOMContentLoaded",() => {
         headers: { 'Content-Type': 'application/json' }
       });
 
-      const data: { id: number, task: string, category: number, due: string, status: number }[] = await res.json();
-      console.log('サーバーからの応答', data);
-      data.forEach(element => {
-        const taskBox = new TaskBox(element.id, element.task, element.due, element.category, element.status, taskBoxs);
+      const data: { id: number, task: string, categoryId: number, due: string, status: number }[] = await res.json();
+      console.log('サーバーからの応答1', data);
+      for (const element of data) {
+        console.log("カテゴリーID：", element.categoryId);
+        const categoryName: string = await getCategoryName(element.categoryId);
+        const taskBox = new TaskBox(element.id, element.task, element.due, categoryName, element.status, taskBoxs);
         taskBox.createTaskBox();
-      });
+      }
     } catch (err) {
       console.error('通信エラー', err);
     }
