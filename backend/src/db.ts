@@ -11,7 +11,7 @@ export const connectDB = async () => {
     CREATE TABLE IF NOT EXISTS tasks (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       task TEXT,
-      category TEXT,
+      categoryId INTEGER,
       due TEXT,
       status TEXT
     )
@@ -19,7 +19,7 @@ export const connectDB = async () => {
   await db.exec(`
     CREATE TABLE IF NOT EXISTS category (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      category TEXT
+      category TEXT NOT NULL UNIQUE
     )
   `);
   await db.exec(`
@@ -30,6 +30,9 @@ export const connectDB = async () => {
   `);
   // await db.exec(`
   //   DROP TABLE IF EXISTS tasks
+  // `); // usersテーブルを削除
+  // await db.exec(`
+  //   DROP TABLE IF EXISTS category
   // `); // usersテーブルを削除
   return db;
 }

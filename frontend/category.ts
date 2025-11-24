@@ -106,7 +106,7 @@ const categoryDateInServer = async () => {
       headers: { 'Content-Type': 'application/json' }
     });
 
-    const data: { id: string, category: string }[] = await res.json();
+    const data: { id: number, category: string }[] = await res.json();
     console.log('サーバーからの応答', data);
     data.forEach(element => {
       const categoryBox = new CategoryBox(String(element.id), element.category, categoryBoxs);
