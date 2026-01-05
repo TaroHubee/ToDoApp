@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Edit</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/edit.css">
+    
+</head>
+<body>
+    <div class="slider">
+        <ul>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="addTask.html">タスク追加</a></li>
+            <li><a href="edit.html?mode=category">カテゴリー編集</a></li>
+            <li><a href="edit.html?mode=status">ステータス編集</a></li>
+        </ul>
+    </div>
+    <button class="menu">
+        <img src="../fig/menu.png" alt="メニューボタン">
+    </button>
+    <div class="container">
+        <header class="header">
+            <h1 class="pageTitle"></h1>
+        </header>
+        <div class="addArea">
+            <div class="addNameArea">
+                <div class="addNameInitial">
+                </div>
+                <div class="addNameForm" contenteditable="true"></div>
+            </div>
+            <button class="addNameButton">
+                +
+            </button>
+        </div>
+        <div class="NameBoxs">
+            <!--データベースからステータスを取得-->
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
+    <div class="modal hidden">
+        <button type="button" class="modalExit">X</button>
+        <div class="NameChange" contenteditable="true"></div>
+        <div class="buttonArea">
+            <div class="NameChangeButtonArea">
+                <button type="button" class="NameChangeButton">Change</button>
+            </div>
+            <div class="NameDeleteButtonArea">
+                <button type="button" class="NameDeleteButton">Delete</button>
+            </div>
+        </div>
+        
+        
+    </div>
+    <div class="duplicateModal hidden">
+        <p>同じものが存在します。</p>
+        <p>変更後のものに統合しますか？</p>
+        <div class="duplicateButtonArea">
+            <button type="button" class="duplicateButton" data-id="yes">Yes</button>
+            <button type="button" class="duplicateButton" data-id="no">No</button>
+        </div>
+    </div>
+    
+    <script src="menu.js" defer></script>
+    <script type="module" src="editor.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.container {
+    display: grid;
+    width: 80%;
+    grid-template-columns: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+    /* リリース時削除 */
+    /* background-color: aqua; */
+}

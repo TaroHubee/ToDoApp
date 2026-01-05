@@ -1,0 +1,46 @@
+.button:hover{
+    cursor: pointer;
+}
+.button:active{
+    background-color: #555;
+}
+
+.modalExit {
+    background-color: black;
+    color: white;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 21px;
+    margin-left: auto;
+    margin-bottom: 5px;
+}
+.modalChange {
+    display: flex;
+    width: 100px;
+    height: 24px;
+    margin: 0px auto 0px auto;
+    justify-content: center;
+    margin-bottom: 5px;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding-bottom: 2px;
+    background-color: snow;
+}
+.modalChange.hover-enabled {
+    cursor: pointer;
+}
+.modalDelete {
+    display: flex;
+    width: 100px;
+    margin: 0px auto 0px auto;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    img {
+        background-color: none;
+        grid-column: 1;
+        width: 18px;
+    }
+}

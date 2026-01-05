@@ -1,0 +1,65 @@
+.exit {
+        text-align: right;        
+    }
+    .exit:hover {
+        font-weight: bold;
+    }
+    a {
+        text-decoration: none;
+    }
+    .addTaskDetailArea {
+        
+        .addTaskDetail {
+            display: grid;
+            grid-template-columns: 5fr 1fr;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            align-items: center;
+            height: 40px;
+            padding-left: 10px;
+            color: dimgray;
+            pointer-events: auto;
+            user-select: text;
+            .addTaskDetailInitial {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            .addTaskDetailForm {
+                grid-column: 1;
+                grid-row: 1;
+                color: black;
+                display: grid;
+            }
+            .hidden-date-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            }
+            .icon {
+                width: 63%;
+                grid-column: 2;
+                grid-row: 1;
+                text-align: right;
+                padding-right: 8px;
+                padding-bottom: 3px;
+                font-size: 25px;
+                cursor: pointer;
+            }
+        }
+        .addTaskButton {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center; /* 左右中央 */
+            align-items: center;     /* 上下中央 */
+            font-weight: bold;
+            font-size: 15px;
+            
+        }
+        .addTaskButton.hover-enabled {
+            background-color: silver;
+        }
+        
+        
+    }

@@ -2,13 +2,15 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-
-    "lib": ["ES2022", "DOM"],
-
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+  },
+  "include": ["./pages/main.ts","./pages/overlay.ts", "/pages/edit.ts", "ts/edit/*.ts"]
 }

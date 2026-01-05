@@ -1,9 +1,9 @@
+import { modal } from "./overlay";
+import { overlay } from "./overlay";
 const addCategory = document.querySelector(".addCategory") as HTMLDivElement;
 const addCategoryForm = addCategory.querySelector('.addCategoryForm')!;
 const addCategoryInitial = addCategory.querySelector('.addCategoryInitial')!;
 const addCategoryButton = addCategory.querySelector('.addTaskButton')!;
-const overlay = document.querySelector('.overlay') as HTMLDivElement;
-const modal = document.querySelector('.modal') as HTMLDivElement;
 const categoryChagneExit = modal.querySelector(".categoryChangeExit")!;
 const categoryChangeName = modal.querySelector(".categoryChangeName") as HTMLDivElement;
 const categoryChangeButton = modal.querySelector(".categoryChangeButton") as HTMLButtonElement;

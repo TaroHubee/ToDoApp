@@ -1,3 +1,5 @@
+import { Modal } from "./overlay.js";
+import { APIURL_Task } from "./APIURL.js";
 const container = document.querySelector(".container") as HTMLDivElement;
 const tasks = document.querySelectorAll(".taskBox");
 const taskBoxs = container.querySelector(".taskBoxs") as HTMLDivElement;
@@ -5,20 +7,6 @@ const taskBoxs = container.querySelector(".taskBoxs") as HTMLDivElement;
 const addTaskForms = document.querySelector('.addTaskForms') as HTMLDivElement;
 const addTaskInitial = addTaskForms.querySelector(".addTaskInitial")!;
 const addTaskForm = addTaskForms.querySelector(".addTaskForm")!;
-
-// <div class="taskBox" draggable="true">
-//   <div class="circle">
-//       <img src="fig/unCheckedCircle.png" alt="チャック欄">
-//   </div>
-//   <p class="taskName">Walk the dog</p>
-//   <p class="deadline">25/10/31</p>
-//   <p class="taskCategory">Home</p>
-//   <div class="statusarea">
-//       <p class="status">
-//           expired
-//       </p>
-//   </div>
-// </div>
 
 class TaskBox {
   
@@ -28,7 +16,7 @@ class TaskBox {
     private _task: string,
     private _deadline: string,
     private _category: string,
-    private _statusId: number,
+    private _status: string,
     private _parent: HTMLDivElement,
   ) {}
 
@@ -42,13 +30,19 @@ class TaskBox {
     circle.className = "circle";
 
     const img = document.createElement("img");
-    img.src = "fig/unCheckedCircle.png";
+    img.src = "../fig/unCheckedCircle.png";
     img.alt = "チェックボックス";
     circle.append(img);
 
     const taskName = document.createElement("p");
     taskName.className = "taskName";
     taskName.textContent = this._task;
+    taskName.addEventListener('click',() => {
+      console.log(taskName.textContent);
+      //モーダル表示
+      const modal = new Modal("change", this._id, this._task, this._deadline, this._category, this._status);
+      modal.display();
+    })
 
     const deadline = document.createElement("p");
     deadline.className = "deadline";
@@ -63,7 +57,7 @@ class TaskBox {
 
     const status = document.createElement("p");
     status.className = "status";
-    status.textContent = String(this._statusId);
+    status.textContent = String(this._status);
     statusarea.appendChild(status);
 
     taskBox.appendChild(circle);
@@ -76,38 +70,20 @@ class TaskBox {
   }
 }
 
-/*カテゴリーIDからカテゴリー名を取得*/
-const getCategoryName = async (categoryId: number): Promise<string>=> {
-  try {
-    const res = await fetch(`http://localhost:3000/get-category?id=${categoryId}`, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json'}
-    });
-    console.log("サーバーに送信", categoryId);
-    const data: {category: string} = await res.json();
-    console.log('サーバーからの応答2', data.category);
-    return data.category;
-  } catch (err) {
-    console.error('通信エラー', err);
-    return "不明";
-  }
-}
 
 /*データベースに登録されてるタスクを取得*/
 document.addEventListener("DOMContentLoaded",() => {
   const taskDateInServer = async () => {
     try {
-      const res = await fetch('http://localhost:3000/get-task', {
+      const res = await fetch('http://localhost:3000/task', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
 
-      const data: { id: number, task: string, categoryId: number, due: string, status: number }[] = await res.json();
+      const data: { id: number, task: string, due: string, category: string, status: string }[] = await res.json();
       console.log('サーバーからの応答1', data);
       for (const element of data) {
-        console.log("カテゴリーID：", element.categoryId);
-        const categoryName: string = await getCategoryName(element.categoryId);
-        const taskBox = new TaskBox(element.id, element.task, element.due, categoryName, element.status, taskBoxs);
+        const taskBox = new TaskBox(element.id, element.task, element.due, element.category, element.status, taskBoxs);
         taskBox.createTaskBox();
       }
     } catch (err) {
@@ -161,14 +137,27 @@ addTaskForm.addEventListener('blur', () => {
 const button = document.querySelector('.addTaskButton') as HTMLButtonElement;
 const task = document.querySelector('.addTaskForm') as HTMLDivElement;
 if (button) {
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async() => {
     const text: string = task.textContent!;
     if (text) {
-      const jsontext: {task: string} = {task: text};
-      console.log(jsontext);
+        try {
+            const res = await fetch(APIURL_Task.post, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({task: text})
+            });
+            const message = await res.json();
+            if (message.result === "fail") {
+                const err = new Error("Error: タスクを追加できませんでした。");
+                throw err;
+            }
+            location.reload();
+        } catch (err) {
+            console.error(`message: ${err}`);
+        }
     } else {
-      const url: string = "./addTask.html";
-      window.location.href = url;
+      const modal = new Modal("add", null, "", "", "", "");
+      modal.display();
     }
     
   })
@@ -178,20 +167,20 @@ if (button) {
 
 
 function getDragAfterElement(container: HTMLElement, y: number): HTMLElement | null {
-  const nodeList = container.querySelectorAll<HTMLElement>(".taskBox:not(.dragging)");
-  const draggableElements: HTMLElement[] = [].slice.call(nodeList);
+    const nodeList = container.querySelectorAll<HTMLElement>(".taskBox:not(.dragging)");
+    const draggableElements: HTMLElement[] = [].slice.call(nodeList);
 
-  let closest = { offset: Number.NEGATIVE_INFINITY, element: null as HTMLElement | null };
+    let closest = { offset: Number.NEGATIVE_INFINITY, element: null as HTMLElement | null };
 
-  draggableElements.forEach((child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
+    draggableElements.forEach((child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
 
-    if (offset < 0 && offset > closest.offset) {
-      closest = { offset, element: child };
-    }
-  });
+        if (offset < 0 && offset > closest.offset) {
+        closest = { offset, element: child };
+        }
+    });
 
-  return closest.element;
+    return closest.element;
 }
 

@@ -47,7 +47,7 @@ if(detailButton) {
         };
         console.log(jsonDetail);
         try {
-          const res = await fetch('http://localhost:3000/add-task', {
+          const res = await fetch('http://localhost:3000/task', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(jsonDetail)

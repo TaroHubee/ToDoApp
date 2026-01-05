@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDoApp</title>
+    <link rel="stylesheet" href="./src/styles/reset.css">
+    <link rel="stylesheet" href="./src/styles/common.css">
+    <link rel="stylesheet" href="./src/styles/index.css">
+  </head>
+  <body>
+    <div class="slider">
+        <ul>
+            <li><a href="index.html">ホーム</a></li>
+            <li><a href="./pages/addTask.html">タスク追加</a></li>
+            <li><a href="./pages/edit.html?mode=category">カテゴリー編集</a></li>
+            <li><a href="./pages/edit.html?mode=status">ステータス編集</a></li>
+        </ul>
+    </div>
+    <button class="menu">
+        <img src="./public/fig/menu.png" alt="メニューボタン">
+    </button>
+    <div class="container">
+        <header class="header">
+            <h1>TODO LIST</h1>
+        </header>
+        <div class="tasks">
+            <div class="addTask">
+                <div class="addTaskForms">
+                    <div class="addTaskInitial">
+                        AddTask
+                    </div>
+                    <div class="addTaskForm" contenteditable="true"></div>
+                </div>
+                <button class="addTaskButton">
+                    +
+                </button>
+            </div>
+            <div class="taskBoxs">
+                <!-- DBからタスク一覧情報を取得し表示 -->
+            </div>
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
+    <div class="modal hidden">
+        <button type="button" class="button modalExit">X</button>
+        <div class="taskDetailInfo">
+            <div class="propatyBox">
+                <div class="propaty">Task</div>
+                <div class="taskinModal" contenteditable="true"></div>
+            </div>
+            <div class="propatyBox">
+                <div class="propaty">Due</div>
+                <div class="dueinModal">
+                    <div class="due" contenteditable="true"></div>
+                    <button type="button" class="icon">
+                        <input type="date" class="hidden-date-input" style="display: none;">
+                        <img class="button" src="../fig/calender.png">                        
+                    </button>
+                </div>
+            </div>
+            <div class="propatyBox">
+                <div class="propaty">Category</div>
+                <div class="categoryinModal" contenteditable="true"></div>
+            </div>
+            <div class="Alternate hidden" id="category">
+                <div class="AlternateLeftSpace"></div>
+                <div class="AlternateRightSpace"></div>
+            </div>
+            <div class="propatyBox">
+                <div class="propaty">Status</div>
+                <div class="statusinModal" contenteditable="true"></div>
+            </div>
+            <div class="Alternate hidden" id="status">
+                <div class="AlternateLeftSpace"></div>
+                <div class="AlternateRightSpace"></div>
+            </div>
+        </div>
+        <div class="buttonArea">
+            <div type="button" class="button modalChange hidden">Change</div>
+            <div type="button" class="button modalAdd hidden">Add</div>
+            <button class="button modalDelete">
+                <img src="../fig/garbedge.jpg" alt="ごみ箱イラスト">
+                <p>Delete</p>
+            </button>
+        </div>
+        
+        
+    </div>
+    
+    <script type="module" src="./src/main.ts"></script>
+    <script type="module" src="./src/overlay.ts"></script>
+    <script type="module" src="./src/menu.ts"></script>
+  </body>
+</html>
