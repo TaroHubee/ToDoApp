@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AddTaskPage</title>
+    <link rel="stylesheet" href="../src/styles/reset.css">
+    <link rel="stylesheet" href="../src/styles/common.css">
+    <link rel="stylesheet" href="../src/styles/addTask.css">
+</head>
+<body>
+    <div class="slider">
+        <ul>
+            <li><a href="../index.html">ホーム</a></li>
+            <li><a href="addTask.html">タスク追加</a></li>
+            <li><a href="edit.html?mode=category">カテゴリー編集</a></li>
+            <li><a href="edit.html?mode=status">ステータス編集</a></li>
+        </ul>
+    </div>
+    <button class="menu">
+        <img src="../fig/menu.png" alt="メニューボタン">
+    </button>
+    <div class="container">
+        <a href="index.html" class="exit">
+            X
+        </a>
+        <header class="header">
+            <h1>TODO LIST</h1>
+        </header>
+        <div class="addTaskDetailArea">
+            <div class="addTaskDetail">
+                <div class="addTaskDetailInitial">
+                    Task
+                </div>
+                <div class="addTaskDetailForm" contenteditable="true"></div>
+            </div>
+            <div class="addTaskDetail">
+                <div class="addTaskDetailInitial">
+                    Category
+                </div>
+                <div class="addTaskDetailForm" contenteditable="true"></div>
+            </div>
+            <div class="addTaskDetail">
+                <div class="addTaskDetailInitial">
+                    Due
+                </div>
+                <div class="addTaskDetailForm"></div>
+                <input type="date" class="hidden-date-input" style="display: none;">
+                <div class="icon">📅</div>
+            </div>
+            <div class="addTaskDetail">
+                <div class="addTaskDetailInitial">
+                    Status
+                </div>
+                <div class="addTaskDetailForm" contenteditable="true"></div>
+            </div>
+            <button type= "button" class="addTaskButton">
+                Add Task
+            </button>
+        </div>
+    </div>
+    <script type="module" src="../src/overlay.ts"></script>
+    <script type="module" src="../src/menu.ts"></script>
+    <script type="module" src="../src/addTask.ts"></script>
+</body>
+</html>

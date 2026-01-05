@@ -1,0 +1,243 @@
+.addTaskButton {
+        border-radius: 10px;
+        padding-bottom: 3px;
+        text-align: center;
+        background-color: black;
+        color: white;
+    }
+
+    /*index.html*/
+    .tasks {
+        /* リリース時削除 */
+        /* background-color: burlywood; */
+        .addTask {
+            display: grid;
+            grid-template-columns: 1fr 45px;
+            border: 1px solid silver;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            padding: 2px;
+            .addTaskForms {
+                display: grid;
+                align-items: center;
+                color: dimgray;
+                padding-left: 10px;
+                pointer-events: auto;
+                user-select: text;
+                .addTaskInitial {
+                    grid-column: 1;
+                    grid-row: 1;
+                }
+                .addTaskForm {
+                    grid-column: 1;
+                    grid-row: 1;
+                    color: black;
+                }
+            }
+            
+            .addTaskButton {
+                font-size: 35px;
+                width: 100%;
+            }
+            .addTaskButton:hover {
+                background-color: silver;
+            }
+            
+            /* リリース時削除 */
+            /* background-color: beige; */
+        }
+        
+
+        .taskBoxs {
+            
+            /* リリース時削除 */
+            /* background-color: cadetblue;
+            display: flex;
+            flex-direction: column; */
+
+            .taskBox {
+                display: grid;
+                grid-template-columns: 35px 2fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                border: 1px solid silver;
+                border-radius: 10px;
+                padding: 10px;
+                margin-bottom: 5px;
+                height: 40px;
+
+                .circle {
+                    grid-column: 1 / 2;
+                    grid-row: 1 / 3;
+                    padding-left: 3px;
+                    margin-right: 3px;
+                    img {
+                        width: 80%;
+                        margin-top: 8px;
+                    }
+                }
+                .taskName {
+                    grid-column: 2;
+                    grid-row: 1;
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+                .taskName:hover {
+                    color: mediumblue;
+                    text-decoration: underline;
+                }
+                .deadline {
+                    grid-column: 3;
+                    grid-row: 1;
+                    color: dimgray;
+                    text-align: right;
+                }
+                .taskCategory {
+                    grid-column: 2;
+                    color: dimgray;
+                }
+                .statusarea {
+                    grid-column: 3;
+                    grid-row: 2;
+                    text-align: right;
+                    .status {
+                        display: inline-block;
+                        color: red;
+                        border: 1px solid black;
+                        padding: 1px;
+                        padding-bottom: 5px;
+                        border-radius: 3px;
+                        color: dimgray;
+                    }
+                }
+            }
+            .taskBox.dragging {
+                opacity: 0.5;
+            }
+        }
+    }
+
+.overlay {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    width: 70%;
+    border-radius: 4px;
+    padding: 10px;
+    display: grid;
+    .modalExit {
+        background-color: black;
+        color: white;
+        width: 23px;
+        margin-left: auto;
+        margin-bottom: 5px;
+    }
+    .modalExit:hover {
+        cursor: pointer;
+    }
+
+    .taskDetailInfo {
+        padding-right: 10px;
+        margin-bottom: 10px;
+        .propatyBox {
+            margin-bottom: 3px;
+            height: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            text-align: center;
+            .propaty {
+                grid-column: 1;
+                display: flex;
+                align-items: center;
+                
+                justify-content: center;
+                
+            }
+            .taskinModal, .dueinModal, .categoryinModal, .statusinModal {
+                grid-column: 2;
+                border: 1px solid slategray;
+                border-radius: 3px;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                padding-left: 4px;
+                width: inherit;
+            }
+            .dueinModal {
+                display: grid;
+                grid-template-columns: 1fr 35px;
+                .due {
+                    text-align: left;
+                }
+                .icon {
+                    display: flex;
+                    grid-column: 2;
+                    align-items: center;
+                    background-color: inherit;
+                    border: none;
+                    border-radius: 3px;
+                    img {
+                        width: 100%;
+                    }
+                }
+            }
+            
+        }
+        
+        .Alternate {
+            margin-bottom: 3px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            .AlternateLeftSpace {
+                grid-column: 1;
+            }
+            .AlternateRightSpace {
+                padding: 4px;
+                grid-column: 2;
+                border: 1px solid slategray;
+                border-radius: 3px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;                  /* 縦方向の間隔 */
+                .AlternateBox {
+                    grid-column: 2;
+                    background-color: antiquewhite;
+                    width: auto;
+                    padding: 4px;
+                    border-radius: 2px;
+                    padding-bottom: 6px;
+                }
+            }
+            
+        }
+    .Alternate.hidden {
+        display: none;
+    }
+    }
+    
+    .buttonArea {
+        display: grid;
+        width: 100%;
+        
+        
+    }
+
+}
+   
+
+
+    
+
+.hidden {
+    display: none;
+}
