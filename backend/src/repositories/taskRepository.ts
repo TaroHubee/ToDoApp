@@ -5,7 +5,7 @@ export class TaskRepository {
     async findAll() {
         const db = await connectDB();
         return db.all(`
-            SELECT t.id, t.task, t.due, c.name AS category, s.name AS status FROM tasks t LEFT JOIN category c ON t.categoryId = c.id LEFT JOIN status s ON t.statusId = s.id    
+            SELECT t.id, t.task, t.due, c.name AS category, s.name AS status FROM tasks t LEFT JOIN category c ON t.categoryId = c.id LEFT JOIN statuses s ON t.statusId = s.id    
         `);
     }
 

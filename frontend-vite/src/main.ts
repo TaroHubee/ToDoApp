@@ -28,6 +28,7 @@ class TaskBox {
 
     const circle = document.createElement("div");
     circle.className = "circle";
+    circle.id = "unchecked";
 
     const img = document.createElement("img");
     img.src = "../fig/unCheckedCircle.png";
@@ -67,6 +68,20 @@ class TaskBox {
     taskBox.appendChild(statusarea);
 
     this._parent.appendChild(taskBox);
+
+    circle.addEventListener('mouseenter', () => {
+      circle.style.cursor = "pointer";
+    })
+    circle.addEventListener('click', () => {
+      if (circle.id === "unchecked") {
+        img.src = "../fig/checkedCircle.png";
+        circle.id = "checked";
+      } else {
+        img.src = "../fig/unCheckedCircle.png";
+        circle.id = "unchecked";
+      }
+      
+    })
   }
 }
 

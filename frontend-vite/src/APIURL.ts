@@ -9,4 +9,6 @@ export const APIURL_Category = {
 
 export const APIURL_Status = {
     get: `${DBURL}/status`,
+    putIsDone: `${DBURL}/status/changeIsDone`,
+    getIsDone: `${DBURL}/status/isDone`
 }

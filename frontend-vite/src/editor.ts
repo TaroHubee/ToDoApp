@@ -7,6 +7,8 @@ const NameChangeButton = document.querySelector('.NameChangeButton') as HTMLButt
 const NameDeleteButton = document.querySelector('.NameDeleteButton') as HTMLButtonElement;
 const duplicateModal = document.querySelector(".duplicateModal") as HTMLDivElement;
 const dupulicateButtons = document.querySelectorAll<HTMLButtonElement>(".duplicateButton");
+const isDoneStatus = document.querySelector('.isDoneStatus') as HTMLDivElement;
+
 
 const configMap = {
     category: CategoryConfig,
@@ -21,9 +23,12 @@ const getMode = (): "category" | "status" => {
 async function main() {
     const mode = getMode();
     const config = configMap[mode];
+    if (mode === "status") {
+        isDoneStatus.classList.remove("hidden");
+    }
     
     console.log(config.title, config.apiURL);
-    const pageMaker = new PageMaker(config.title, config.apiURL, NameBoxs, config.propaty);
+    const pageMaker = new PageMaker(config.title, config.apiURL, NameBoxs);
 
 
     const modalExit = modal.querySelector(".modalExit") as HTMLButtonElement;
@@ -90,11 +95,16 @@ async function main() {
     });
 
     NameDeleteButton.addEventListener("mouseenter", () => {
+        const checkbox = document.getElementById("done") as HTMLInputElement;
         if (!NameChange.textContent) {
             NameDeleteButton.disabled = true;
             NameDeleteButton.style.cursor = "not-allowed";
         }
         if (NameChange.textContent !== NameChange.dataset.name) {
+            NameDeleteButton.disabled = true;
+            NameDeleteButton.style.cursor = "not-allowed";
+        }
+        if (mode === "status" && checkbox.checked === true) {
             NameDeleteButton.disabled = true;
             NameDeleteButton.style.cursor = "not-allowed";
         }
@@ -108,7 +118,9 @@ async function main() {
     NameDeleteButton.addEventListener('click', async() => {
         const databaseManeger = new EditorDatabaseManeger(config.apiURL);
         const message = await databaseManeger.deleteRows(Number(NameChange.dataset.id));
+        console.log(`deleteId: ${NameChange.dataset.id}`);
         if(message.message === "Delete") {
+            console.log(NameChange.dataset.id)
             window.location.reload();
         }
     });

@@ -12,8 +12,7 @@ export class PageMaker {
     constructor(
         private title: string,
         private apiURL: string,
-        private parentBox: HTMLDivElement,
-        private propatyInTasks: string
+        private parentBox: HTMLDivElement
     ) {}
 
     /**メソッド */
@@ -66,10 +65,10 @@ export class PageMaker {
         console.log(Names);
         if (Names.ok === true) {
             Names.data.forEach(element => {
-                const nameBox = new NameBox(this.title, element.id, element.name, this.parentBox);
+                const nameBox = new NameBox(this.title, element.id, element.name, this.parentBox, element.is_done);
+                console.log(`id: ${element.id}`);
                 nameBox.create();
                 nameBox.addModal();
-                console.log(element.id);
             });
         } else {
             console.log(Names.error);
