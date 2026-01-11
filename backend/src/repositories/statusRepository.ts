@@ -61,4 +61,18 @@ export class StatusRepository {
             return {result: false};
         }
     }
+
+    async getDoneStatus() {
+        const db = await connectDB();
+        const row = await db.get< { id: number } | undefined >(`
+            SELECT id FROM statuses WHERE is_done = 1
+        `);
+
+        if (!row) {
+            return { result: "success", id: null };
+        }
+
+        return { result: "success", id: row.id };
+    }
+
 }

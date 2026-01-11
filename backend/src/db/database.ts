@@ -18,7 +18,8 @@ export const connectDB = async () => {
       task TEXT,
       categoryId INTEGER,
       due TEXT,
-      statusId INTEGER
+      statusId INTEGER,
+      previousStatusId INTEGER
     )
   `);
   await db.exec(`

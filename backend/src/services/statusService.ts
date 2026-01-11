@@ -40,4 +40,8 @@ export class StatusService {
     async IsDone(id: number) {
         return this.repo.IsDone(id);
     }
+
+    async getDoneStatus() {
+        return this.repo.getDoneStatus();
+    }
 }
