@@ -6,7 +6,7 @@ export class EditorDatabaseManeger {
     // データの追加
     // データの更新
     async getRows() {
-        type Data = {id: number, name: string}
+        type Data = {id: number, name: string, is_done: 0 | 1}
         type Result = {ok: true; data: Data[]} | {ok: false; error: string};
         try {
             const res = await fetch(this.apiURL, {

@@ -223,6 +223,25 @@ export class Modal {
                         }
                     }
                     changeTask();
+                });
+                ModalElement.delete.addEventListener('click', () => {
+                    const deleteTask = async() => {
+                        try {
+                            const res = await fetch(APIURL_Task.delete, {
+                                method: 'DELETE',
+                                headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify({id: this._id})
+                            });
+                            const message = await res.json();
+                            console.log(message);
+                            if (message.result === "success") {
+                                location.reload();
+                            }
+                        } catch (err) {
+                            console.error("message: タスクを削除できませんでした");
+                        }
+                    };
+                    deleteTask();
                 })
                 break;
             case "add":
@@ -279,6 +298,8 @@ export class Modal {
                     changeTask();
 
                 });
+
+                
                 break;
             default:
                 break;

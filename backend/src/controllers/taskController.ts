@@ -3,6 +3,7 @@ import { TaskService } from "../services/taskService.js";
 import { CategoryService } from "../services/categoryService.js";
 import { StatusService } from "../services/statusService.js";
 import { error } from "console";
+import { NONAME } from "dns";
 
 const services = new TaskService();
 const categoryService = new CategoryService();
@@ -31,40 +32,47 @@ export class TaskController {
 
     chageTask = async (req: Request, res: Response) => {
         //categoryIdを取得
-        let categoryId: number;
+        let categoryId: number | null;
         try {
-            const response = await categoryService.changeCategory(req.body.id, req.body.category);
-
-            if (response.message !== "exited") {
-                const response_add = await categoryService.addCategory(req.body.category);
-                if (response_add.id === null) {
-                    const err = new Error("カテゴリー追加失敗");
-                    throw err;
-                }
-                categoryId = response_add.id!;
+            if (req.body.category === "") {
+                categoryId = null;
             } else {
-                categoryId = response.exitId;
-            }
+                const response = await categoryService.changeCategory(req.body.id, req.body.category);
 
-            
+                if (response.message !== "exited") {
+                    const response_add = await categoryService.addCategory(req.body.category);
+                    if (response_add.id === null) {
+                        const err = new Error("カテゴリー追加失敗");
+                        throw err;
+                    }
+                    categoryId = response_add.id!;
+                } else {
+                    categoryId = response.exitId;
+                }
+            }
         } catch (err) {
             return res.status(500).json({ message: err });
         }
         //statusIdを取得
-        let statusId: number;
+        let statusId: number | null;
         try {
-            const response = await statusService.changeStatus(req.body.id, req.body.status);
-
-            if (response.message !== "exited") {
-                const response_add = await statusService.addStatus(req.body.status);
-                if (response_add.id === null) {
-                    const err = new Error("ステータス追加失敗");
-                    throw err;
-                }
-                statusId = response_add.id!;
+            if (req.body.status === "") {
+                statusId = null;
             } else {
-                statusId = response.exitId;
+                const response = await statusService.changeStatus(req.body.id, req.body.status);
+
+                if (response.message !== "exited") {
+                    const response_add = await statusService.addStatus(req.body.status);
+                    if (response_add.id === null) {
+                        const err = new Error("ステータス追加失敗");
+                        throw err;
+                    }
+                    statusId = response_add.id!;
+                } else {
+                    statusId = response.exitId;
+                }
             }
+            
         } catch (err) {
             return res.status(500).json({ message: err });
         }
@@ -94,6 +102,76 @@ export class TaskController {
             return res.json({result: "success", id: id});
         } catch (err) {
             return res.json({result: "fail", id: null});
+        }
+    }
+
+    putPrevious = async (req: Request, res: Response) => {
+        let message;
+        try {
+            message = await services.putPrevious(req.body.id);
+        } catch (err) {
+            return res.status(500).json({result: "fail", err: "put previous controller 1"});
+        }
+        if (message.result === "fail") {
+            return res.status(500).json({result: "fail", err: "put previous controller 2"});
+        }
+        
+        try {
+            message = await statusService.getDoneStatus();
+        } catch (err) {
+            return res.status(500).json({result: "fail", err: "get Done status controller"});
+        }
+        if (message.result === "fail" || message.id === null) {
+            return res.status(500).json({result: "fail", err: "get Done status controller"});
+        }
+
+        try {
+            message = await services.chengeStatus(req.body.id, message.id);
+            if (message.result === "success") {
+               return res.json(message); 
+            } else {
+                return res.status(500).json(message);
+            }
+        } catch (err) {
+            return res.status(500).json({result: "fail", err: "change status controller"});
+        }
+    }
+
+    isDone = async (req: Request, res: Response) => {
+        try {
+            const message = await services.isDone(req.body.id);
+            if (message.result === "success" && message.judge) {
+                return res.json({result: true});
+            } else {
+                return res.json({result: false});
+            }
+        } catch (err) {
+            return res.json({result: false});
+        }
+    }
+
+    getPreviousStatus = async (req: Request, res: Response) => {
+        let previousStatusId: number;
+        try {
+            const message = await services.getPreviousStatus(req.body.id);
+            if (message.result === "success" && message.previousStatusId !== null) {
+                previousStatusId = message.previousStatusId!;
+            } else {
+                return res.json({result: "fail", previousStatusId: null});
+            }
+        } catch (err) {
+            return res.json({result: "fail", previousStatusId: null});
+        }
+
+        try {
+            const message = await services.chengeStatus(req.body.id, previousStatusId);
+            if (message.result === "success") {
+                return res.json({result: "success", previousStatusId: previousStatusId});
+            } else {
+                return res.json({result: "fail", previousStatusId: null});
+            }
+        } catch (err) {
+            
         }
     }
 }
