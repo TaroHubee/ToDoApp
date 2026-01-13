@@ -28,11 +28,74 @@ class TaskBox {
 
     const circle = document.createElement("div");
     circle.className = "circle";
+    circle.id = "unchecked";
 
     const img = document.createElement("img");
-    img.src = "../fig/unCheckedCircle.png";
+    const is_done = async (id: number): Promise<boolean> => {
+      try {
+        const res = await fetch(APIURL_Task.isDone, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+
+        if (!res.ok) return false;
+
+        const result: { result: boolean } = await res.json();
+        return result.result;
+      } catch (err) {
+        return false;
+      }
+    };
+
+    // サーバーの状態を取得してから表示を決定する
+    is_done(this._id).then(isDone => {
+      circle.id = isDone ? "checked" : "unchecked";
+      img.src = isDone ? "../fig/checkedCircle.png" : "../fig/unCheckedCircle.png";
+    });
+
     img.alt = "チェックボックス";
     circle.append(img);
+
+    // imgクリックでサーバーに変更を送信（イベント伝播を止める）
+    img.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const currentlyChecked = circle.id === "checked";
+      try {
+        if (currentlyChecked) {
+          // checked をクリック → previousStatusId にしてリロード
+          const res = await fetch(APIURL_Task.getPrevious, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: this._id }),
+          });
+          const json = await res.json();
+          console.log('set previous response:', json);
+          if (json.result === "success") {
+            location.reload();
+          } else {
+            console.error(json);
+          }
+          return;
+        } else {
+          // unchecked をクリック → チェックにする（成功時にリロード）
+          const res = await fetch(APIURL_Task.putPrevious, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: this._id }),
+          });
+          const json = await res.json();
+          console.log('putPrevious response:', json);
+          if (json.result === "success") {
+            location.reload();
+          } else {
+            console.error(json);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
 
     const taskName = document.createElement("p");
     taskName.className = "taskName";
@@ -55,10 +118,12 @@ class TaskBox {
     const statusarea = document.createElement("div");
     statusarea.className = "statusarea";
 
-    const status = document.createElement("p");
-    status.className = "status";
-    status.textContent = String(this._status);
-    statusarea.appendChild(status);
+    if (this._status !== null) {
+      const status = document.createElement("p");
+      status.className = "status";
+      status.textContent = String(this._status);
+      statusarea.appendChild(status);
+    }
 
     taskBox.appendChild(circle);
     taskBox.appendChild(taskName);
@@ -67,6 +132,11 @@ class TaskBox {
     taskBox.appendChild(statusarea);
 
     this._parent.appendChild(taskBox);
+
+    circle.addEventListener('mouseenter', () => {
+      circle.style.cursor = "pointer";
+    })
+    // circleのローカルトグルは削除（サーバー反映を優先するため）
   }
 }
 
