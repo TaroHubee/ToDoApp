@@ -10,7 +10,6 @@ export class NameBox {
   private edit_name?: HTMLDivElement;
 
   constructor(
-    private _title: string,
     private _id: number,
     private _name: string,
     private _parent: HTMLDivElement,
