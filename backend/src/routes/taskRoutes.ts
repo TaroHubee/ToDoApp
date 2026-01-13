@@ -9,6 +9,9 @@ router.delete("/", controller.delete);
 router.put("/", controller.chageTask);
 router.put("/category", controller.changeCategory);
 router.post("/", controller.addTask);
+router.put("/previous", controller.putPrevious);
+router.post("/isDone", controller.isDone);
+router.post("/previous", controller.getPreviousStatus);
 
 
 

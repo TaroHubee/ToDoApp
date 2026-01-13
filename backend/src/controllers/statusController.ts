@@ -50,4 +50,33 @@ export class StatusController {
             return res.status(500).json({message: "error", deleteId: null});
         }
     }
+
+    changeIsDone = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.body;
+            if (typeof id !== "number") {
+                const err = new Error("message: Invalid Id");
+                throw err;
+            }
+            const message = await statusService.changeIsDone(id);
+            res.json(message);
+        } catch (err) {
+            console.error("changeIsDone error:", err);
+
+            res.status(500).json({
+            message: err instanceof Error ? err.message : "Internal Server Error",
+            });
+        }
+    }
+
+    isDone = async (req: Request, res: Response) => {
+        try {
+            const id = req.body.id;
+            const message = await statusService.IsDone(id);
+            res.json(message);
+        } catch (err) {
+            console.error("IsDone error", err);
+            res.status(500).json({message: err});
+        }
+    }
 }

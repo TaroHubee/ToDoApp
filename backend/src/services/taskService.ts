@@ -28,7 +28,7 @@ export class TaskService {
         return this.repo.deleteTask(id);
     }
 
-    async changeTask(id: number, task: string, categoryId: number, due: string, statusId: number) {
+    async changeTask(id: number, task: string, categoryId: number | null, due: string, statusId: number | null) {
         return this.repo.changeTask(id, task, categoryId, due, statusId);
     }
 
@@ -38,5 +38,21 @@ export class TaskService {
 
     async addTask(task: string) {
         return this.repo.addTask(task);
+    }
+
+    async putPrevious(id: number) {
+        return this.repo.putPrevious(id);
+    }
+
+    async chengeStatus(id: number, statusId: number) {
+        return this.repo.changeStatus(id, statusId);
+    }
+
+    async isDone(id: number) {
+        return this.repo.isDone(id);
+    }
+
+    async getPreviousStatus(id: number) {
+        return this.repo.getPreviousStatusId(id);
     }
 }

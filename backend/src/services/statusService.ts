@@ -32,4 +32,16 @@ export class StatusService {
     async deleteStatus(id: number) {
         return this.repo.delete(id);
     }
+
+    async changeIsDone(id: number) {
+        return this.repo.chengeIsDone(id);
+    }
+
+    async IsDone(id: number) {
+        return this.repo.IsDone(id);
+    }
+
+    async getDoneStatus() {
+        return this.repo.getDoneStatus();
+    }
 }
