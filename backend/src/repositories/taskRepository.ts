@@ -77,7 +77,7 @@ export class TaskRepository {
         }
     }
 
-    async changeStatus(id: number, statusId: number) {
+    async changeStatus(id: number, statusId: number | null) {
         try {
             const db = await connectDB();
             const result = await db.run(`
@@ -127,7 +127,7 @@ export class TaskRepository {
             `,[id]);
             return {result: "success", previousStatusId: row?.previousStatusId};
         } catch (err) {
-            return {result: "fail", err: "get previous status id"};
+            return {result: "fail", err: "get previous status is NULL"};
         }
     }
 }
