@@ -1,4 +1,4 @@
-export const DBURL = "http://localhost:3000"
+const DBURL = import.meta.env.VITE_API_BASE || "http://localhost:3000";
 export const APIURL_Task = {
     change: `${DBURL}/task`,
     post: `${DBURL}/task`,

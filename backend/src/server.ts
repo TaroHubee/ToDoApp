@@ -4,12 +4,15 @@ import categoryRoutes from "./routes/categoryRoutes.js"
 import statusRoutes from "./routes/statusRoutes.js"
 import cors from "cors";
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __dirname = path.resolve();
 
 const app = express();
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.ORIGIN || "http://localhost:5173",
     credentials: true
 }))
 const PORT = 3000;
