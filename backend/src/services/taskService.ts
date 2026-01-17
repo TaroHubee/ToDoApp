@@ -44,7 +44,7 @@ export class TaskService {
         return this.repo.putPrevious(id);
     }
 
-    async chengeStatus(id: number, statusId: number) {
+    async chengeStatus(id: number, statusId: number | null) {
         return this.repo.changeStatus(id, statusId);
     }
 

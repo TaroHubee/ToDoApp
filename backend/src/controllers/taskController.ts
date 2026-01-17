@@ -151,13 +151,13 @@ export class TaskController {
     }
 
     getPreviousStatus = async (req: Request, res: Response) => {
-        let previousStatusId: number;
+        let previousStatusId: number | null;
         try {
             const message = await services.getPreviousStatus(req.body.id);
             if (message.result === "success" && message.previousStatusId !== null) {
                 previousStatusId = message.previousStatusId!;
             } else {
-                return res.json({result: "fail", previousStatusId: null});
+                previousStatusId = null;
             }
         } catch (err) {
             return res.json({result: "fail", previousStatusId: null});

@@ -2,6 +2,7 @@ export const modal = document.querySelector('.modal') as HTMLDivElement;
 export const overlay = document.querySelector('.overlay') as HTMLDivElement;
 export const NameChange = modal.querySelector(".NameChange") as HTMLDivElement;
 import { APIURL_Status } from "./APIURL";
+import { StatusDatabaseManeger } from "./databaseManeger";
 
 
 
@@ -42,6 +43,7 @@ export class NameBox {
 
   //編集画面に遷移イベント追加
   addModal() {
+    const statusDBManeger = new StatusDatabaseManeger(APIURL_Status.getIsDone);
     const checkbox = document.getElementById("done") as HTMLInputElement;
     const isDoneStatus = document.querySelector(".isDoneStatus") as HTMLDivElement;
 
@@ -56,13 +58,7 @@ export class NameBox {
       isDoneStatus.id = String(this._id);
       let isDone = false;
       try {
-        const res = await fetch(APIURL_Status.getIsDone, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: Number(isDoneStatus.id) }),
-        });
-        const message = await res.json();
-        isDone = message.result;
+        isDone = await statusDBManeger.isDone(this._id);
         if (!isDone) {
           this._isDone = 0;
         } else {
@@ -78,17 +74,14 @@ export class NameBox {
     });
 
     checkbox.addEventListener("change", async () => {
-      const id = await Number(isDoneStatus.id);
+      const id = Number(isDoneStatus.id);
       console.log(id);
+      
       if (!checkbox.checked || !id) return;
       
       try {
-        await fetch(APIURL_Status.putIsDone, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id }),
-        });
-        
+        await statusDBManeger.putIsDone(id);
+        location.reload();
       } catch (err) {
         console.error(err);
         checkbox.checked = false;

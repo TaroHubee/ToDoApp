@@ -98,4 +98,138 @@ export class TaskDatabaseManeger {
             
         }
     }
+
+    async is_done(id: number): Promise<boolean> {
+        try {
+        const res = await fetch(`${this.apiURL}/isDone`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id }),
+        });
+
+        if (!res.ok) return false;
+
+        const result: { result: boolean } = await res.json();
+        return result.result;
+        } catch (err) {
+        return false;
+        }
+    };
+
+
+    async setPrevious(id: number) {
+        try {
+            const res = await fetch(`${this.apiURL}/previous`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id }),
+            });
+            const json = await res.json();
+            console.log('set previous response:', json);
+            return json;
+        } catch (err) {
+            return {result: "fail"};
+        }
+    }
+
+
+    async putPrevious(id: number) {
+        try {
+            const res = await fetch(`${this.apiURL}/previous`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: id }),
+            });
+            const json = await res.json();
+            console.log('putPrevious response:', json);
+            return json;
+        } catch (err) {
+            return {result: "fail"};
+        }
+    }
+
+    async getTaskInfo() {
+        try {
+        const res = await fetch(`${this.apiURL}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data: { id: number, task: string, due: string, category: string, status: string }[] = await res.json();
+        return {result: "success", data: data};
+        } catch (err) {
+        return {result: "fail"};
+        }
+    }
+
+    async postTask(task: string) {
+        try {
+            const res = await fetch(`${this.apiURL}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ task: task })
+            });
+            return res.json();
+        } catch (err) {
+            return {result: "fail"};
+        }
+    }
+
+    async putTask(id: number, task: string, due: string, category: string, status: string) {
+        try {
+            await fetch(`${this.apiURL}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, task: task, due: due, category: category, status: status })
+            });
+            return {result: "success"};
+        } catch (err) {
+            return {result: "fail"};
+        }
+    }
+
+    async deleteTask(id: number) {
+        try {
+            await fetch(`${this.apiURL}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id })
+            });
+            return {result: "success"};
+        } catch (err) {
+            return {result: "fail"};
+        }
+    }
+}
+
+export class StatusDatabaseManeger {
+    constructor(
+        private apiURL: string
+    ) {}
+
+    async isDone(id: number) {
+        try {
+            const res = await fetch(this.apiURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: id }),
+            });
+            const result: { result: boolean } = await res.json();
+            return result.result;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    async putIsDone(id: number) {
+        try {
+            await fetch(this.apiURL, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: id }),
+            });
+        } catch (err) {
+            console.error("通信エラー", err);
+        }
+    }
 }
