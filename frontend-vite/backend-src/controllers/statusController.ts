@@ -79,4 +79,15 @@ export class StatusController {
             res.status(500).json({message: err});
         }
     }
+
+    changeDoneStatus = async (req: Request, res: Response) => {
+        try {
+            const id = req.body.id;
+            const message = await statusService.changeDoneStatus(id);
+            res.json(message);
+        } catch (err) {
+            console.error("changeDoneStatus error", err);
+            res.status(500).json({message: err});
+        }
+    }
 }

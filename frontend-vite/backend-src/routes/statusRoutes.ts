@@ -10,6 +10,7 @@ router.put("/", statusController.change);
 router.delete("/", statusController.delete);
 router.put("/changeIsDone", statusController.changeIsDone);
 router.post("/isDone", statusController.isDone);
+router.put("/isDone", statusController.changeDoneStatus);
 
 
 export default router;

@@ -75,4 +75,15 @@ export class StatusRepository {
         return { result: "success", id: row.id };
     }
 
+    async changeDoneStatus(id: number) {
+        const db = await connectDB();
+        await db.run(`
+            UPDATE statuses SET is_done = 0 WHERE is_done = 1;
+        `);
+        await db.run(`
+            UPDATE statuses SET is_done = 1 WHERE id = ?;
+        `,[id]);
+        return {message: "success"}
+    }
+
 }
