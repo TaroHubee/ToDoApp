@@ -44,4 +44,8 @@ export class StatusService {
     async getDoneStatus() {
         return this.repo.getDoneStatus();
     }
+
+    async changeDoneStatus(id: number) {
+        return this.repo.changeDoneStatus(id);
+    }
 }
