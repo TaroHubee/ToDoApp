@@ -31,15 +31,15 @@ export class TaskBox {
       const isDone = await taskDBManager.is_done(this._id);
       if (isDone) {
         circle.id = "checked";
-        img.src = "../fig/checkedCircle.png";
+        img.src = "/fig/checkedCircle.png";
       } else {
         circle.id = "unchecked";
-        img.src = "../fig/unCheckedCircle.png";
+        img.src = "/fig/unCheckedCircle.png";
       };
     } catch (err) {
       console.error('is_done check failed:', err);
       circle.id = "unchecked";
-      img.src = "../fig/unCheckedCircle.png";
+      img.src = "/fig/unCheckedCircle.png";
     }
 
     img.alt = "チェックボックス";
