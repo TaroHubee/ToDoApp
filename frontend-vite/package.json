@@ -34,6 +34,10 @@
   "author": "Taro Hitomi",
   "description": "ToDoApp - Desktop Application",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TaroHubee/ToDoApp.git"
+  },
   "dependencies": {
     "better-sqlite3": "^12.6.2",
     "cors": "^2.8.5",
