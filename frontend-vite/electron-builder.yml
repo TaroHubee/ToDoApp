@@ -8,7 +8,6 @@ files:
     - dist/**/*
     - dist-electron/**/*
     - dist-backend/**/*
-    - database/**/*
     - package.json
 win:
     target:
