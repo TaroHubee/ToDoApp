@@ -1,5 +1,5 @@
 import { APIURL_Task, APIURL_Category, APIURL_Status } from "./APIURL";
-import { EditorDatabaseManeger } from "./databaseManeger";
+import { EditorDatabaseManeger, TaskDatabaseManeger } from "./databaseManeger";
 
 export const overlay = document.querySelector('.overlay') as HTMLDivElement;
 export const modal = document.querySelector('.modal') as HTMLDivElement;
@@ -40,6 +40,8 @@ export class Modal {
         ModalElement.calenderHidden.addEventListener('input', () => {
             ModalElement.due.textContent = ModalElement.calenderHidden.value;
         })
+
+        const taskDBManager = new TaskDatabaseManeger(APIURL_Task.post);
 
         //カテゴリー枠の制御------------------------------------------
         //クリックしたらカテゴリー一覧ボタンを作成しボタンを押したらそのカテゴリーを入力
@@ -205,43 +207,27 @@ export class Modal {
                     ModalElement.Change.classList.add("button");
                     ModalElement.Change.style.cursor = "pointer";
                 });
-                ModalElement.Change.addEventListener('click', () => {
-                    const changeTask = async() => {
-                        try {
-                            const res = await fetch(APIURL_Task.change, {
-                                method: 'PUT',
-                                headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({id: this._id, task: ModalElement.task.textContent, due: ModalElement.due.textContent, category: ModalElement.category.textContent, status: ModalElement.status.textContent})
-                            });
-                            const message = await res.json();
-                            console.log(message);
-                            if (message.result === "success") {
-                                location.reload()
-                            }
-                        } catch (err) {
-                            console.error("message: サーバーに接続できませんでした");
+                ModalElement.Change.addEventListener('click', async () => {
+                    try {
+                        const message = await taskDBManager.putTask(this._id!, ModalElement.task.textContent, ModalElement.due.textContent, ModalElement.category.textContent, ModalElement.status.textContent);
+                        console.log(message);
+                        if (message.result === "success") {
+                            location.reload()
                         }
+                    } catch (err) {
+                        console.error("message: サーバーに接続できませんでした");
                     }
-                    changeTask();
                 });
-                ModalElement.delete.addEventListener('click', () => {
-                    const deleteTask = async() => {
-                        try {
-                            const res = await fetch(APIURL_Task.delete, {
-                                method: 'DELETE',
-                                headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({id: this._id})
-                            });
-                            const message = await res.json();
+                ModalElement.delete.addEventListener('click', async() => {
+                    try {
+                            const message = await taskDBManager.deleteTask(this._id!);
                             console.log(message);
                             if (message.result === "success") {
                                 location.reload();
                             }
-                        } catch (err) {
-                            console.error("message: タスクを削除できませんでした");
-                        }
-                    };
-                    deleteTask();
+                    } catch (err) {
+                        console.error("message: タスクを削除できませんでした");
+                    }
                 })
                 break;
             case "add":
@@ -259,18 +245,13 @@ export class Modal {
                     }
                 })
                 ModalElement.Add.addEventListener('click', async() => {
-                    const task = ModalElement.task.textContent;
+                    const task = ModalElement.task.textContent!;
                     const due = ModalElement.due.textContent;
                     const category = ModalElement.category.textContent;
                     const status = ModalElement.status.textContent;
                     let id: number;
                     try {
-                        const res = await fetch(APIURL_Task.post, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({task: task})
-                        });
-                        const message = await res.json();
+                        const message = await taskDBManager.postTask(task);
                         if (message.result === "fail") {
                             const err = new Error("Error: タスクを追加できませんでした。");
                             throw err;
@@ -279,27 +260,17 @@ export class Modal {
                     } catch (err) {
                         console.error(`message: ${err}`);
                     }
-                    const changeTask = async() => {
-                        try {
-                            const res = await fetch(APIURL_Task.change, {
-                                method: 'PUT',
-                                headers: {'Content-Type': 'application/json'},
-                                body: JSON.stringify({id: id, task: task, due: due, category: category, status:status})
-                            });
-                            const message = await res.json();
-                            console.log(message);
-                            if (message.result === "success") {
-                                location.reload()
-                            }
-                        } catch (err) {
-                            console.error("message: サーバーに接続できませんでした");
+                    
+                    try {
+                        const message = await taskDBManager.putTask(id!, task, due ?? "", category ?? "", status ?? "");
+                        console.log(message);
+                        if (message.result === "success") {
+                            location.reload()
                         }
+                    } catch (err) {
+                        console.error("message: サーバーに接続できませんでした");
                     }
-                    changeTask();
-
                 });
-
-                
                 break;
             default:
                 break;

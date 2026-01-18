@@ -1,7 +1,8 @@
-import { TaskConfig, CategoryConfig, StatusConfig} from "./config";
+import { CategoryConfig, StatusConfig} from "./config";
 import { PageMaker } from "./pagemaker";
 import { modal, overlay, NameChange } from "./nameBox";
 import { TaskDatabaseManeger, EditorDatabaseManeger } from "./databaseManeger";
+import { APIURL_Task } from "./APIURL";
 const NameBoxs = document.querySelector('.NameBoxs') as HTMLDivElement;
 const NameChangeButton = document.querySelector('.NameChangeButton') as HTMLButtonElement;
 const NameDeleteButton = document.querySelector('.NameDeleteButton') as HTMLButtonElement;
@@ -75,7 +76,7 @@ async function main() {
                             console.log(`exitId: ${putResult.exitId}`)
                             console.log("Yes が押された");
                             //タスクDBからカテゴリーIDをexitIdに変更->put
-                            const taskDBManeger = new TaskDatabaseManeger(TaskConfig.apiURL);
+                            const taskDBManeger = new TaskDatabaseManeger(APIURL_Task.change);
                             taskDBManeger.putCategory(Number(NameChange.dataset.id), putResult.exitId)
                             //カテゴリDBからカテゴリIDの行を削除->delete
                             databaseManeger.deleteRows(Number(NameChange.dataset.id))

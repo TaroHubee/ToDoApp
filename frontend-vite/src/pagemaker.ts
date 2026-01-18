@@ -65,7 +65,7 @@ export class PageMaker {
         console.log(Names);
         if (Names.ok === true) {
             Names.data.forEach(element => {
-                const nameBox = new NameBox(this.title, element.id, element.name, this.parentBox, element.is_done);
+                const nameBox = new NameBox(element.id, element.name, this.parentBox, element.is_done);
                 console.log(`id: ${element.id}`);
                 nameBox.create();
                 nameBox.addModal();

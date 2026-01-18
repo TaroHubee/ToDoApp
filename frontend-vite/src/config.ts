@@ -1,18 +1,20 @@
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+
 export const CategoryConfig = {
     title: "Category",
-    apiURL: "http://localhost:3000/category",
+    apiURL: `${API_BASE}/category`,
     propaty: "category",
     propatyInTasks: "categoryId"//taskテーブルのプロパティ名
 }
 
 export const StatusConfig = {
     title: "Status",
-    apiURL: "http://localhost:3000/status",
+    apiURL: `${API_BASE}/status`,
     propaty: "status",
     propatyInTasks: "statusId"//taskテーブルのプロパティ名
 
 }
 
 export const TaskConfig = {
-    apiURL: "http://localhost:3000/task",
+    apiURL: `${API_BASE}/task`,
 }

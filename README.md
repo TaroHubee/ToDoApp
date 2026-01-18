@@ -5,14 +5,12 @@ ToDoAppは、日々のタスク管理を効率化するためのWebアプリで�
 
 ---
 ## 機能
-### 実装済み
 - タスク一覧画面
 - タスク追加画面
 - カテゴリー管理画面
 - タスク追加機能
 - カテゴリー追加・編集機能
 ### 今後実装予定
-- タスク/カテゴリーのDB連携
 - ログイン機能
 - ステータス変更などのUI更新
 - タスク優先度管理
@@ -22,8 +20,8 @@ ToDoAppは、日々のタスク管理を効率化するためのWebアプリで�
 ## アプリ画面
 <img src="./ScreenShot/タスク一覧画面.png" width="300" style="margin-right: 10px;">
 <img src="./ScreenShot/タスク一覧画面-メニュー.png" width="300" style="margin-right: 10px;">
-<img src="./ScreenShot/タスク追加画面.png" width="300" style="margin-right: 10px;">
 <img src="./ScreenShot/カテゴリー管理画面.png" width="300" style="margin-right: 10px;">
+<img src="./ScreenShot/ステータス管理画面.png" width="300" style="margin-right: 10px;">
 
 ---
 ## 使用技術
